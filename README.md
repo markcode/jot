@@ -50,12 +50,12 @@ returned 1311.14 rps.
 
 ami-cf33fea6 (micro): 
 
-ab -t 30 -c 10 http://ec2-174-129-65-40.compute-1.amazonaws.com/pixel.gif
+	ab -t 30 -c 10 http://ec2-174-129-65-40.compute-1.amazonaws.com/pixel.gif
 returned 916.97 rps.
 
 ami-cf33fea6 (micro): 
 
-	ab -t 30 -c 40 http://127.0.0.1/pixel.gif 
+	ab -t 30 -c 40 http://127.0.0.1/pixel.gif	
 returned 502.22 rps.
 
 The micro will refuse ab tests more often with "Connection reset by peer" messages.
