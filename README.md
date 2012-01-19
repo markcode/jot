@@ -29,7 +29,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 Introduction
 ------------
-This setup combines Facebook Scribe, Node.js, Maxmind GeoIP, Nginx on EC2 to run as a web analytics pixel server
+This setup combines Facebook Scribe, Node.js, Maxmind GeoIP, Nginx on EC2 to run as a web analytics pixel server.
 
 
 Notes
@@ -38,12 +38,25 @@ Notes
 ami-cf33fea6 (micro): Performance testing return around - per internal request.
 
 if want to ab (apache benchmark) on nginx
-  apt-get install apache2-utils
+
+	apt-get install apache2-utils
 	
 (so far, havent finished jot.js, scribe, error, geo etc)
-ami-cf33fea6 (micro): ab -t 10 http://127.0.0.1/pixel.gif returned 1311.14 rps.
-ami-cf33fea6 (micro): ab -t 30 -c 10 http://ec2-174-129-65-40.compute-1.amazonaws.com/pixel.gif returned 916.97 rps.
-ami-cf33fea6 (micro): ab -t 30 -c 40 http://127.0.0.1/pixel.gif returned 502.22 rps.
+
+ami-cf33fea6 (micro): 
+
+	ab -t 10 http://127.0.0.1/pixel.gif
+returned 1311.14 rps.
+
+ami-cf33fea6 (micro): 
+
+ab -t 30 -c 10 http://ec2-174-129-65-40.compute-1.amazonaws.com/pixel.gif
+returned 916.97 rps.
+
+ami-cf33fea6 (micro): 
+
+	ab -t 30 -c 40 http://127.0.0.1/pixel.gif 
+returned 502.22 rps.
 
 The micro will refuse ab tests more often with "Connection reset by peer" messages.
 
