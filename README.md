@@ -1,7 +1,7 @@
 Jot Server
 ==========
 
-Analumic Analytics Logger "jot"
+Node.js pixel server - Setup with Scribe and Nginx; "jot"
 
 Version: 0.1
 
@@ -71,6 +71,7 @@ Install
     apt-get -y install curl build-essential openssl libssl-dev libpcre3-dev zlib1g
 
 ###Install Nginx
+
 	nginx=stable
 	add-apt-repository ppa:nginx/$nginx
 	apt-get install nginx	
@@ -82,9 +83,11 @@ commands
 	service nginx restart
 	
 ###Can reboot instance if want more memory (sudo su)
+
 	reboot
 
 ###Install thrift
+
     cd opt
     git clone git://git.apache.org/thrift.git
     cd thrift
@@ -95,10 +98,12 @@ commands
     make install
 
 ###Hum may not need py's
+
     cd lib/py
     python setup.py install
 
 ###Install fb303
+
     cd ..
     cd ..
 
@@ -109,6 +114,7 @@ commands
     make install
 
 ###Install scribe
+
     cd ..
     cd ..
     cd ..
@@ -121,23 +127,28 @@ commands
     make install
 	
 ###Hum may not need py's but did anyway
+
     cd lib/py
     python setup.py install
 
 ###Finally fix a bug by doing this
+
     echo "/usr/local/lib" >> /etc/ld.so.conf
     /sbin/ldconfig
 
 ###Can test scribe
+
     scribed -c /opt/scribe/examples/example1.conf
     ctrl+c
 
 ###Scribe - create default config file for scribed to use
+
 	mkdir /usr/local/scribe/
 	vi /usr/local/scribe/scribe.conf
 	INS /jot/config/scribe.conf 	#or whatever
 
 ###Scribe - now setup scribed so will be able to control start/stop/restart such as on reboot
+
 	mkdir /var/log/jot
 	#scribe - edit jot/config/scribed file path to scribe.conf (or other conf file).
 	vi /etc/init.d/scribed
@@ -150,6 +161,7 @@ commands
 	@reboot /etc/init.d/scribed start	
 
 ###Install node from source (apt-get install nodejs worked but acted funny! so install from source)
+
     cd opt
     git clone https://github.com/joyent/node.git && cd node
     ./configure
@@ -158,6 +170,7 @@ commands
     node -v
 	
 had problems geting node-waf to work with node so reinstalled node from source
+
 	wget http://nodejs.org/dist/v0.6.7/node-v0.6.7.tar.gz
 	tar -zxvf node-v0.6.7.tar.gz
 	cd node-v0.6.7
@@ -167,7 +180,9 @@ had problems geting node-waf to work with node so reinstalled node from source
     node -v	
 
 ###Install npm for node modules (within node script directory "jot")
+
 to install locally within node script directory /var/jot or globally using -g
+
 	cd /opt/
     curl http://npmjs.org/install.sh | sh
 
@@ -175,6 +190,7 @@ to install locally within node script directory /var/jot or globally using -g
     npm install scribe -g
 
 ###Install jot.js program
+
     cd /var/
     mkdir jot
     cd jot
@@ -182,6 +198,7 @@ to install locally within node script directory /var/jot or globally using -g
     INS...	
 
 ###Now fix node errors
+
 Anoyingly (at the time of writing this) when run jot.js both node modules (scribe and thrift) generate 
 Error: The "sys" module is now called "util".
 
@@ -231,12 +248,15 @@ can specify which web directory to proxy: location /website_directory {
 			}
 
 ###Monitor jot.js with Monit
+
 Need to keep an eye on jot.js to make sure it keeps running. 
 Nice article here: http://howtonode.org/a9fcf4f29cc999af32c93c7e43c9688c164ccd12/deploying-node-upstart-monit
 
 ###Install GeoIP databases (from Maxmind)
+
 Conform with Maxmind license; "This product includes GeoLite data created by MaxMind, available from
 http://maxmind.com/"
+
 	cd tmp
 	wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
 	gunzip GeoIP.dat.gz
@@ -253,6 +273,7 @@ http://maxmind.com/"
 	mv GeoLiteCityv6.dat /usr/local/share/GeoIP/
 
 ###Install GeoIP C library
+
 	cd opt
 	wget -c  http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz
 	tar -xzf GeoIP.tar.gz
@@ -264,12 +285,16 @@ http://maxmind.com/"
 	make install
 
 ###Geoip for node.js
+
 had major problems getting geoip for node working through npm so install manually like
+
 	cd /opt
 	git clone https://github.com/kuno/GeoIP
 	cd GeoIP
 	node-waf configure build #shit, did'nt work on my EC2
+	
 tryed
+
 	/opt/node/tools/waf-light configure build #configured but did'nt build
 	/opt/waf/waf configure
 	/usr/bin/node-waf/waf-light configure build
@@ -279,12 +304,14 @@ tryed
 	
 	
 now can run by refering to this build like
+
 	var City = geoip.City;
 	var city = new City('/usr/local/share/GeoIP/GeoLiteCity.dat', true);
 	var sync_data = city.lookupSync('8.8.8.8');
 	console.log(sync_data);	
 
 ###Output Scribe logs
+
 Now all is working can output Scribe's logs to somewhere for processing.
 This default setup ouputs text log files to /var/log/jot/
 
@@ -299,14 +326,18 @@ in jot.js or piping
 to Sphinx Search for realtime search/analytics.
 
 ###Other
+
 The setup described here is just general; you'll need to apply all nessisary security/redundency to your EC2 and nginx setup! 
 
 ###Problems with node geoip
+
 people say that wpn error is due to old python version >2.7 which is found on Ubumtu 10.10, so will try and upgrade
+
 	cd opt
 	curl -kL http://xrl.us/pythonbrewinstall | bash
 	
 tryed (but still no luck)
+
 	apt-get install nodejs-dev
 	apt-get install libexpat-dev
 
