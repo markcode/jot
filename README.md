@@ -1,5 +1,5 @@
-Jot Server
-==========
+Jot
+===
 
 Node.js pixel server - Setup with Scribe and Nginx; "jot"
 
